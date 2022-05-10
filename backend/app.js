@@ -23,9 +23,12 @@ app.get('/', (req, res) => {
   res.send('API is running...')
 })
 
-app.get('/ibm', async(_req, res) => {
+app.post('/ibm', async(req, res) => {
+
+  const { text } = req.body
+
   const analyzeParams = {
-    text: 'I had a good day today but I am feeling a little bit confused about how I can get all my tasks done on time and then also do laundry because laundry booking is very difficult to find in Lappis.',
+    text: text,
     features: {
       entities: {
         emotion: true,
@@ -41,7 +44,7 @@ app.get('/ibm', async(_req, res) => {
   naturalLanguageUnderstanding.analyze(analyzeParams)
     .then(analysisResults => {
       // console.log(JSON.stringify(analysisResults, null, 2));
-      res.json(analysisResults)
+      res.json(analysisResults.result.keywords)
   })
     .catch(err => {
       // console.log('Error', err)
